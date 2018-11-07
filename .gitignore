@@ -1,0 +1,6 @@
+project/.idea/
+project/venv/
+project/frontend/node_modules/
+project/backend/static/dist/
+*.pyc
+*.log
