@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from flask import Flask
-from backend import config
 import os
 import json
+from flask import Flask
+from backend import config
+from flask_pymongo import PyMongo
+
 
 def register_context_processors(app):
     @app.context_processor
@@ -23,9 +25,29 @@ def register_context_processors(app):
             )
         return dict(manifest=manifest)
 
+def register_blueprint(app):
+    from backend.account import account
+    from backend.api import api
+    app.register_blueprint(account)
+    app.register_blueprint(api, url_prefix="/api")
+
+
+def register_mongoDB(app):
+    app.config.update(
+        MONGO_HOST=config.MONGO_HOST,
+        MONGO_PORT=config.MONGO_PORT,
+        MONGO_DBNAME=config.MONGO_DBNAME
+    )
+    return PyMongo(app, config_prefix="MONGO")
+
 
 app = Flask(__name__)
+app.secret_key = config.SESSION_SECRET_KEY
+app.config['SESSION_COOKIE_NAME'] = "session%d:"%config.WEB_SERVER_PORT
+
+mongo = register_mongoDB(app)
 register_context_processors(app)
+register_blueprint(app)
 
 from backend import views
 import sys

@@ -1,7 +1,7 @@
 ### Require
 
 1. node.js
-2. python
+2. python2.7
 3. virtualenv
 
 
