@@ -45,6 +45,8 @@ def on_success(session, payloads):
         session["email"] = payloads['openid.sreg.email']
         session["cname"] = payloads[u'openid.sreg.fullname']
         session["username"] = payloads['openid.sreg.nickname']
+        if not get_user_info(session["email"]):
+            new_user(session["email"], session["cname"])
         return True
     else:
         return False
@@ -62,9 +64,21 @@ def login_required(func):
 
     return wrapper
 
+def new_user(email, cname):
+    if get_user_info(email):
+        return
+    logger.info("new User: %s"%email)
+    try:
+        mongo.db.account.insert({
+            "email": email,
+            "name": cname,
+        })
+    except:
+        logger.error("%s 新建用户失败"%session.get("email"))
+
 
 def get_user_info(email):
-    return mongo.db.account.find_one({"email": email})
+    return mongo.db.account.find_one({"email": email}, {"_id": 0})
 
 
 def check_login(session):
