@@ -4,6 +4,7 @@ import axios from "axios/index";
 const state = {
     name: "",
     email: "",
+    nickname: "",
 }
 
 const actions = {
@@ -23,6 +24,7 @@ const mutations = {
     [types.SET_USER_BASE_INFO] (state, data){
         state.name = data.name
         state.email = data.email
+        state.nickname = data.nickname
     },
 }
 

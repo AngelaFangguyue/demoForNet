@@ -72,6 +72,7 @@ def new_user(email, cname):
         mongo.db.account.insert({
             "email": email,
             "name": cname,
+            "nickname": "",
         })
     except:
         logger.error("%s 新建用户失败"%session.get("email"))
