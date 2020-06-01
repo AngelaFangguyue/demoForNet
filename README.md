@@ -1,3 +1,9 @@
+本项目仅做学习参考使用，python3版本请见：
+
+https://gitlab.leihuo.netease.com/hzyuqiubin/website-demo-python3
+
+
+
 ### Require
 
 1. node.js
